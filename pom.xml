@@ -15,5 +15,8 @@
         <module>eMall-order</module>
         <module>eMall-product</module>
         <module>eMall-ware</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>eMall-common</module>
     </modules>
 </project>
