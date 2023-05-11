@@ -6,3 +6,19 @@ spring:
           uri: https://www.baidu.com
           predicates:
             - Query=url,baidu
+
+        - id: product_route
+          uri: lb://eMall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
+
+
