@@ -18,5 +18,6 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>eMall-common</module>
+        <module>eMall-gateway</module>
     </modules>
 </project>
