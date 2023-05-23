@@ -19,5 +19,6 @@
         <module>renren-generator</module>
         <module>eMall-common</module>
         <module>eMall-gateway</module>
+        <module>eMall-third-party</module>
     </modules>
 </project>

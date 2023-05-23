@@ -19,11 +19,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.eMall</groupId>
-            <artifactId>eMall-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.eMall</groupId>-->
+<!--            <artifactId>eMall-common</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
         <!--        mybatis plus   -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -49,12 +49,12 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
-        <dependency>
-            <groupId>io.renren</groupId>
-            <artifactId>renren-fast</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.renren</groupId>-->
+<!--            <artifactId>renren-fast</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <!--        mysql drive-->
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
