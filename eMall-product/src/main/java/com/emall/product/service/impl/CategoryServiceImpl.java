@@ -1,7 +1,10 @@
 package com.emall.product.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,7 +19,7 @@ import com.emall.product.dao.CategoryDao;
 import com.emall.product.entity.CategoryEntity;
 import com.emall.product.service.CategoryService;
 
-
+@Slf4j
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
@@ -53,6 +56,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Override
     public void removeMenuByUds(List<Long> list) {
         baseMapper.deleteBatchIds(list);
+    }
+
+    @Override
+    public Long[] generateCatelogPath(Long catelogId) {
+        List<Long> path = new ArrayList<>();
+        CategoryEntity categoryEntity = this.getById(catelogId);
+        while(catelogId != 0) {
+            path.add(catelogId);
+            catelogId = categoryEntity.getParentCid();
+            categoryEntity = this.getById((catelogId));
+        }
+        Collections.reverse(path);
+        return path.toArray(new Long[path.size()]);
     }
 
     // Get all children catagory recursily

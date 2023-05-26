@@ -1,5 +1,6 @@
 package com.emall.product.service.impl;
 
+import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,6 +25,27 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
+        if(catelogId == 0) {
+            return this.queryPage(params);
+        } else {
+            // select * from pms_attr_group where catelog_id=? and (attr_group_id=key or attr_group_name like key)
+            String key = (String) params.get("key");
+            QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId);
+            if(!StringUtils.isNullOrEmpty("key")) {
+                wrapper.and(obj -> {
+                    obj.eq("attr_group_id", key).or().like("attr_group_name", key);
+                });
+            }
+            IPage<AttrGroupEntity> page = this.page(
+                    new Query<AttrGroupEntity>().getPage(params),
+                    wrapper
+            );
+            return new PageUtils(page);
+        }
     }
 
 }
