@@ -1,6 +1,8 @@
 package com.emall.product.service.impl;
 
+import com.emall.product.service.CategoryBrandRelationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ import com.emall.product.service.CategoryService;
 @Slf4j
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -69,6 +74,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
         Collections.reverse(path);
         return path.toArray(new Long[path.size()]);
+    }
+
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
     }
 
     // Get all children catagory recursily
