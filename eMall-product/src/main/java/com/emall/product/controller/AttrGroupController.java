@@ -1,15 +1,14 @@
 package com.emall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.emall.product.entity.AttrEntity;
+import com.emall.product.service.AttrService;
 import com.emall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.emall.product.entity.AttrGroupEntity;
 import com.emall.product.service.AttrGroupService;
@@ -34,6 +33,15 @@ public class AttrGroupController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private AttrService attrService;
+
+    @GetMapping("/{attrGroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrGroupId") Long attrGroupId) {
+        List<AttrEntity> entities = attrService.getRelationAttr(attrGroupId);
+        return R.ok().put("data", entities);
+    }
+
     /**
      * 列表
      */
@@ -44,7 +52,6 @@ public class AttrGroupController {
         PageUtils page = attrGroupService.queryPage(params, catelogId);
         return R.ok().put("page", page);
     }
-
 
     /**
      * 信息

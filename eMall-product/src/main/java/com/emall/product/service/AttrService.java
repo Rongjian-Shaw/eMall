@@ -6,6 +6,7 @@ import com.emall.product.entity.AttrEntity;
 import com.emall.product.vo.AttrRespVo;
 import com.emall.product.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +27,7 @@ public interface AttrService extends IService<AttrEntity> {
     AttrRespVo getAttrInfo(Long attrId);
 
     void updateAttr(AttrVo attrVo);
+
+    List<AttrEntity> getRelationAttr(Long attrGroupId);
 }
 
