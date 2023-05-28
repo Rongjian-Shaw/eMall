@@ -15,7 +15,7 @@ spring:
             - RewritePath=/api/(?<segment>.*), /$\{segment}
 
         - id: member_route
-          uri: lb://eMall-product
+          uri: lb://eMall-member
           predicates:
             - Path=/api/member/**
           filters:
