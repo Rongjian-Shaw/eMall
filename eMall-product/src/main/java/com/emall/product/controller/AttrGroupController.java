@@ -9,6 +9,7 @@ import com.emall.product.service.AttrAttrgroupRelationService;
 import com.emall.product.service.AttrService;
 import com.emall.product.service.CategoryService;
 import com.emall.product.vo.AttrGroupRelationVo;
+import com.emall.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,14 @@ public class AttrGroupController {
     public R attrRelation(@PathVariable("attrGroupId") Long attrGroupId) {
         List<AttrEntity> entities = attrService.getRelationAttr(attrGroupId);
         return R.ok().put("data", entities);
+    }
+
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrs(@PathVariable("catelogId")Long catelogId) {
+        // 1. 查出当前catelog下的所有attrGroup
+        // 2. 查出每个attrGroup下的attr并组成一个list
+        List<AttrGroupWithAttrsVo> attrGroupWithAttrsVos = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId);
+        return R.ok().put("data", attrGroupWithAttrsVos);
     }
 
     @GetMapping("/{attrGroupId}/noattr/relation")
