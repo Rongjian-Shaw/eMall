@@ -8,6 +8,7 @@ import com.emall.product.entity.AttrAttrgroupRelationEntity;
 import com.emall.product.entity.AttrGroupEntity;
 import com.emall.product.entity.CategoryEntity;
 import com.emall.product.service.CategoryService;
+import com.emall.product.vo.AttrGroupRelationVo;
 import com.emall.product.vo.AttrRespVo;
 import com.emall.product.vo.AttrVo;
 import com.mysql.cj.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ import com.emall.product.dao.AttrDao;
 import com.emall.product.entity.AttrEntity;
 import com.emall.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Attr;
 
 
 @Service("attrService")
@@ -190,7 +193,65 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<Long> attrIds = attrAttrgroupRelationEntities.stream().map(attrAttrgroupRelationEntity -> {
             return attrAttrgroupRelationEntity.getAttrId();
         }).collect(Collectors.toList());
+        if(attrIds == null || attrIds.size() == 0) {
+            return null;
+        }
         Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
         return (List<AttrEntity>) attrEntities;
+    }
+
+    @Override
+    public void deleteRelation(AttrGroupRelationVo[] attrGroupRelationVos) {
+        List<AttrAttrgroupRelationEntity> attrAttrgroupRelationEntities = Arrays.asList(attrGroupRelationVos).stream().map(attrGroupRelationVo -> {
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            BeanUtils.copyProperties(attrGroupRelationVo, attrAttrgroupRelationEntity);
+            return attrAttrgroupRelationEntity;
+        }).collect(Collectors.toList());
+        attrAttrgroupRelationDao.deleteBatchRelation(attrAttrgroupRelationEntities);
+    }
+
+    /**
+     * 获取当前attrGroup没有关联的所有属性
+     * @param params
+     * @param attrGroupId
+     * @return
+     */
+    @Override
+    public PageUtils getNoRelationAttr(Map<String, Object> params, Long attrGroupId) {
+        // 1. 当前attrGroup只能关联自己所属catelog下的attr
+        AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrGroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+        //2、当前attrGroup只能关联别的attrGroup没有引用的attr
+        //2.1)、当前catelog下的所有attrGroup
+        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(
+                new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
+        List<Long> attrGroupIds = attrGroupEntities.stream().map(item -> {
+            return item.getAttrGroupId();
+        }).collect(Collectors.toList());
+
+        // 2.2)、这些attrGroup关联的attr
+        List<AttrAttrgroupRelationEntity> attrAttrgroupRelationEntities = attrAttrgroupRelationDao.selectList(
+                new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", attrGroupIds));
+        List<Long> attrIds = attrAttrgroupRelationEntities.stream().map(item -> {
+            return item.getAttrId();
+        }).collect(Collectors.toList());
+
+        // 2.3)、从当前catelog的所有attr中移除这些attr, 因为这些attr已经关联其他attrGroup了，attr->attrGroup是多对一的
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>()
+                .eq("catelog_id", catelogId)
+                .eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        if(attrIds != null && attrIds.size() > 0) {
+            wrapper.notIn("attr_id", attrIds);
+        }
+        String key = (String) params.get("key");
+        if(!StringUtils.isNullOrEmpty(key)) {
+            wrapper.and(w -> {
+                w.eq("attr_id", key).or().like("attr_name", key);
+            });
+        }
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
+        PageUtils pageUtils = new PageUtils(page);
+
+        return pageUtils;
     }
 }

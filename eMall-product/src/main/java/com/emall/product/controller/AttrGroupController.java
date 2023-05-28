@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.emall.product.entity.AttrEntity;
+import com.emall.product.service.AttrAttrgroupRelationService;
 import com.emall.product.service.AttrService;
 import com.emall.product.service.CategoryService;
+import com.emall.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,10 +38,34 @@ public class AttrGroupController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> attrGroupRelationVos) {
+        attrAttrgroupRelationService.saveBatch(attrGroupRelationVos);
+
+        return R.ok();
+    }
+
     @GetMapping("/{attrGroupId}/attr/relation")
     public R attrRelation(@PathVariable("attrGroupId") Long attrGroupId) {
         List<AttrEntity> entities = attrService.getRelationAttr(attrGroupId);
         return R.ok().put("data", entities);
+    }
+
+    @GetMapping("/{attrGroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrGroupId") Long attrGroupId,
+                            @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelationAttr(params, attrGroupId);
+        return R.ok().put("page", page);
+    }
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] attrGroupRelationVos) {
+        System.out.println("deleteRelation: " + attrGroupRelationVos[0].getAttrId() + " " + attrGroupRelationVos[0].getAttrGroupId());
+        attrService.deleteRelation(attrGroupRelationVos);
+        return R.ok();
     }
 
     /**
