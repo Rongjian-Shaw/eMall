@@ -2,22 +2,19 @@ package com.emall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.emall.common.utils.PageUtils;
-import com.emall.product.entity.SpuInfoEntity;
-import com.emall.product.vo.SpuSaveVo;
+import com.emall.product.entity.SkuSaleAttrValueEntity;
 
 import java.util.Map;
 
 /**
- * spu信息
+ * sku销售属性&值
  *
  * @author rongjian
  * @email rongjianxiao@gmail.com
- * @date 2023-05-28 16:40:22
+ * @date 2023-05-28 20:06:06
  */
-public interface SpuInfoService extends IService<SpuInfoEntity> {
+public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
-
-    void saveSpuInfo(SpuSaveVo spuSaveVo);
 }
 
