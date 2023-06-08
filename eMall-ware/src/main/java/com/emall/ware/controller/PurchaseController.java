@@ -1,14 +1,12 @@
 package com.emall.ware.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
+import com.emall.ware.vo.MergeVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.emall.ware.entity.PurchaseEntity;
 import com.emall.ware.service.PurchaseService;
@@ -29,6 +27,23 @@ import com.emall.common.utils.R;
 public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
+
+    @PostMapping("/merge")
+    public R merge(@RequestBody MergeVo mergeVo) {
+        purchaseService.mergePurchase(mergeVo);
+
+        return R.ok();
+    }
+
+    /**
+     * 未领取的列表
+     */
+    @RequestMapping("/unreceived/list")
+    public R unreceivedList(@RequestParam Map<String, Object> params){
+        PageUtils page = purchaseService.queryPageUnreceivedPurchase(params);
+
+        return R.ok().put("page", page);
+    }
 
     /**
      * 列表
@@ -56,6 +71,8 @@ public class PurchaseController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody PurchaseEntity purchase){
+        purchase.setCreateTime(new Date());
+        purchase.setUpdateTime(new Date());
 		purchaseService.save(purchase);
 
         return R.ok();

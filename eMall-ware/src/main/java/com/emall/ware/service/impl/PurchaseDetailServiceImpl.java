@@ -1,5 +1,6 @@
 package com.emall.ware.service.impl;
 
+import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,9 +19,25 @@ public class PurchaseDetailServiceImpl extends ServiceImpl<PurchaseDetailDao, Pu
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        QueryWrapper<PurchaseDetailEntity> purchaseDetailEntityQueryWrapper = new QueryWrapper<>();
+        String key = (String) params.get("key");
+        if(!StringUtils.isNullOrEmpty(key)) {
+            purchaseDetailEntityQueryWrapper.and(wrapper -> {
+                wrapper.eq("purchase_id", key).or().eq("sku_id", key);
+            });
+        }
+        String status = (String) params.get("status");
+        if(!StringUtils.isNullOrEmpty(status)) {
+            purchaseDetailEntityQueryWrapper.eq("status", status);
+        }
+        String wareId = (String) params.get("wareId");
+        if(!StringUtils.isNullOrEmpty(wareId)) {
+            purchaseDetailEntityQueryWrapper.eq("ware_id", wareId);
+        }
+
         IPage<PurchaseDetailEntity> page = this.page(
                 new Query<PurchaseDetailEntity>().getPage(params),
-                new QueryWrapper<PurchaseDetailEntity>()
+                purchaseDetailEntityQueryWrapper
         );
 
         return new PageUtils(page);
