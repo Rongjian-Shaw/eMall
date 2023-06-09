@@ -2,6 +2,8 @@ package com.emall.ware.service.impl;
 
 import com.mysql.cj.util.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -41,6 +43,13 @@ public class PurchaseDetailServiceImpl extends ServiceImpl<PurchaseDetailDao, Pu
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<PurchaseDetailEntity> listDetailByPurchaseId(Long id) {
+        List<PurchaseDetailEntity> purchaseId = this.list(new QueryWrapper<PurchaseDetailEntity>().eq("purchase_id", id));
+
+        return purchaseId;
     }
 
 }
