@@ -32,7 +32,6 @@ import com.emall.product.dao.AttrDao;
 import com.emall.product.entity.AttrEntity;
 import com.emall.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Attr;
 
 
 @Service("attrService")
@@ -253,5 +252,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         PageUtils pageUtils = new PageUtils(page);
 
         return pageUtils;
+    }
+
+    @Override
+    public List<Long> selectSearchAttrIds(List<Long> attrIds) {
+        return baseMapper.selectSearchAttrIds(attrIds);
     }
 }

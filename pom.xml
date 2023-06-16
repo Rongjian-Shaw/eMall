@@ -20,5 +20,6 @@
         <module>eMall-common</module>
         <module>eMall-gateway</module>
         <module>eMall-third-party</module>
+        <module>eMall-search</module>
     </modules>
 </project>
