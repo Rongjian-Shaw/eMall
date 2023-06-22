@@ -42,4 +42,9 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
 
+        - id: emall_host_route
+          uri: lb://eMall-product
+          predicates:
+            - Host=**.emall.com
+
 
