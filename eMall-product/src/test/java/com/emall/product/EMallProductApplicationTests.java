@@ -9,10 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -23,6 +26,9 @@ public class EMallProductApplicationTests {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @Test
     public void testGetCatelogPath(){
@@ -46,6 +52,13 @@ public class EMallProductApplicationTests {
         });
     }
 
+    @Test
+    public void testRedis() {
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        ops.set("a", "hello world" + UUID.randomUUID().toString());
+        String a = ops.get("a");
+        System.out.println("a is " + a);
+    }
 
 
 }

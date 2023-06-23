@@ -265,7 +265,7 @@ header {
         overflow: hidden;
         cursor: pointer; }
       header .header_sous .header_form img {
-        width: 47;
+        width: 47px;
         height: 32px;
         position: absolute; }
     header .header_sous .header_ico {
@@ -891,13 +891,13 @@ header {
     width: 1190px;
     height: 55px;
     padding: 0 30px;
-    background: url("section_second_header_background.png") no-repeat;
+    background: url("../img/section_second_header_background.png") no-repeat;
     position: relative;
     margin-top: 20px; }
     .section_second .section_second_header .section_second_header_img {
       width: 28px;
       height: 28px;
-      background: url("section_second.png") no-repeat;
+      background: url("../img/section_second.png") no-repeat;
       background-position: -194px -52px;
       position: absolute;
       top: 0;
@@ -915,7 +915,7 @@ header {
       .section_second .section_second_header .section_second_header_left p {
         width: 40px;
         height: 40px;
-        background: url("section_second.png") no-repeat;
+        background: url("../img/section_second.png") no-repeat;
         background-position: 6px -39px;
         margin-top: 10px; }
       .section_second .section_second_header .section_second_header_left > span:nth-child(2) {
@@ -926,7 +926,7 @@ header {
         display: inline-block;
         width: 20px;
         height: 20px;
-        background: url("section_second.png") no-repeat;
+        background: url("../img/section_second.png") no-repeat;
         background-position: -154px -39px; }
     .section_second .section_second_header .section_second_header_right {
       float: right; }
@@ -1131,7 +1131,7 @@ header {
           width: 28px;
           height: 28px;
           background-color: #FFFFFF;
-          background: url("section_second.png") no-repeat;
+          background: url("../img/section_second.png") no-repeat;
           background-position: -194px -100px;
           position: absolute;
           top: 0;
@@ -1185,7 +1185,7 @@ header {
           .section_second .section_find .section_find_right .section_find_right_header div > span:nth-child(2) {
             width: 20px;
             height: 20px;
-            background: url("section_second.png") no-repeat;
+            background: url("../img/section_second.png") no-repeat;
             background-position: -154px -39px; }
       .section_second .section_find .section_find_center .section_find_left_list,
       .section_second .section_find .section_find_left .section_find_left_list,
@@ -1250,7 +1250,7 @@ header {
         .section_second .section_find .section_find_center .section_find_center_header .section_find_center_header_img,
         .section_second .section_find .section_find_left .section_find_center_header .section_find_center_header_img,
         .section_second .section_find .section_find_right .section_find_center_header .section_find_center_header_img {
-          background: url("section_find_center_header.png") no-repeat;
+          background: url("../img/section_find_center_header.png") no-repeat;
           background-position: -4px -4px; }
       .section_second .section_find .section_find_center .swiper_section_find_center_list,
       .section_second .section_find .section_find_left .swiper_section_find_center_list,
@@ -1381,7 +1381,7 @@ header {
                   position: absolute;
                   top: 10px;
                   left: 10px;
-                  background: url("section_second.png") no-repeat;
+                  background: url("../img/section_second.png") no-repeat;
                   background-position: -104px -40px;
                   line-height: 35px;
                   color: #FFFFFF; }
@@ -1436,7 +1436,7 @@ header {
           width: 28px;
           height: 28px;
           background-color: #FFFFFF;
-          background: url("section_second.png") no-repeat;
+          background: url("../img/section_second.png") no-repeat;
           background-position: -194px -52px;
           position: absolute;
           top: 0;
@@ -1458,7 +1458,7 @@ header {
           .section_second .section_ling .section_ling_left .section_ling_left_header div > span:nth-child(2) {
             width: 20px;
             height: 20px;
-            background: url("section_second.png") no-repeat;
+            background: url("../img/section_second.png") no-repeat;
             background-position: -154px -39px; }
       .section_second .section_ling .section_ling_left .section_ling_left_list {
         width: 790px;
@@ -1543,7 +1543,7 @@ header {
           width: 28px;
           height: 28px;
           background-color: #FFFFFF;
-          background: url("section_ling_right_header_img.png") no-repeat;
+          background: url("../img/section_ling_right_header_img.png") no-repeat;
           background-position: -52px -4px;
           position: absolute;
           top: 0;
@@ -1565,7 +1565,7 @@ header {
           .section_second .section_ling .section_ling_right .section_ling_right_header div > span:nth-child(2) {
             width: 20px;
             height: 20px;
-            background: url("section_second.png") no-repeat;
+            background: url("../img/section_second.png") no-repeat;
             background-position: -154px -39px; }
     .section_second .section_ling .swiper_section_ling_right_list {
       width: 390px;
@@ -1620,7 +1620,7 @@ header {
           display: inline-block;
           width: 20px;
           height: 20px;
-          background: url("section_ling_right_header_img.png") no-repeat;
+          background: url("../img/section_ling_right_header_img.png") no-repeat;
           background-position: -0px -45px;
           float: left; }
   .section_second .section_img {
@@ -1645,7 +1645,7 @@ header {
     width: 1190px;
     padding: 0 0 20px;
     height: 35px;
-    background: url("xiazai1.png") repeat-x 0 18px;
+    background: url("../img/xiazai1.png") repeat-x 0 18px;
     text-align: center;
     font-size: 24px;
     line-height: 35px;
@@ -1752,7 +1752,7 @@ header {
           position: absolute;
           right: 20px;
           top: 11px;
-          background: url("sprite_entrylive@1x.png") no-repeat;
+          background: url("../img/sprite_entrylive@1x.png") no-repeat;
           background-position: -205px -128px;
           background-size: 237px 170px; }
       .section_xpz .section_xpz_content_right .right_top .banner {
@@ -1777,7 +1777,7 @@ header {
         width: 65px;
         height: 65px;
         z-index: 66;
-        background: url("sprite_entrylive@1x.png") no-repeat;
+        background: url("../img/sprite_entrylive@1x.png") no-repeat;
         background-position: 0 -105px;
         background-size: 237px 170px; }
       .section_xpz .section_xpz_content_right .right_top .swiper-button-prev {
@@ -1914,7 +1914,7 @@ header {
     width: 1190px;
     padding: 0 0 20px;
     height: 35px;
-    background: url("xiazai1.png") repeat-x 0 18px;
+    background: url("../img/xiazai1.png") repeat-x 0 18px;
     text-align: center;
     font-size: 24px;
     line-height: 35px; }
@@ -2133,8 +2133,7 @@ header {
       .section_ash .section_ash_content1 .section_ash_content:nth-child(3) .right_con_p1 {
         color: #78538E; }
     .section_ash .section_ash_content1 .section_ash_content:nth-child(4) {
-      margin-top: 15px;
-      margin-right: none; }
+      margin-top: 15px; }
       .section_ash .section_ash_content1 .section_ash_content:nth-child(4) .section_ash_content_tit {
         background: #5e6c90; }
       .section_ash .section_ash_content1 .section_ash_content:nth-child(4) .right_con_p1 {
@@ -8917,7 +8916,7 @@ ul {
           position: relative; }
           .section_myj_header .section_myj_header_left .aibaobao_section .aibaobao_pt .pt_loge ul {
             width: 2280px;
-            transform: translsateX(-570px);
+            transform: translateX(-570px);
             transition-property: transform;
             transition-duration: 0.6s;
             position: absolute; }
@@ -8974,7 +8973,7 @@ ul {
     margin: 0 auto;
     text-align: center;
     border: 1px solid #F6F6F6;
-    background: url("xiazai1.png") repeat-x 0 center; }
+    background: url("../img/xiazai1.png") repeat-x 0 center; }
     .section_gts .gts span {
       width: 178px;
       height: 500px;
@@ -9009,36 +9008,36 @@ ul {
           font-size: 12px;
           font-weight: bold; }
     .section_gts ul li:first-child {
-      background: url("gts (8).png") no-repeat 0 0; }
+      background: url("../img/gts (8).png") no-repeat 0 0; }
       .section_gts ul li:first-child div {
         background: #997763; }
     .section_gts ul li:nth-child(2) {
-      background: url("gts (2).png") no-repeat 0 0; }
+      background: url("../img/gts (2).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(2) div {
         background: #876D8E; }
     .section_gts ul li:nth-child(3) {
-      background: url("gts (6).png") no-repeat 0 0; }
+      background: url("../img/gts (6).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(3) div {
         background: rgba(210, 78, 79, 0.8); }
     .section_gts ul li:nth-child(4) {
-      background: url("gts (3).png") no-repeat 0 0; }
+      background: url("../img/gts (3).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(4) div {
         background: #DE745C; }
     .section_gts ul li:nth-child(5) {
-      background: url("gts (4).png") no-repeat 0 0; }
+      background: url("../img/gts (4).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(5) div {
         background: #6C9BBD; }
     .section_gts ul li:nth-child(6) {
-      background: url("gts (1).png") no-repeat 0 0; }
+      background: url("../img/gts (1).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(6) div {
         background: #D8C22F; }
     .section_gts ul li:nth-child(7) {
-      background: url("gts (7).png") no-repeat 0 0; }
+      background: url("../img/gts (7).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(7) div {
         background: rgba(186, 102, 147, 0.9); }
     .section_gts ul li:nth-child(8) {
       margin-right: 0;
-      background: url("gts (5).png") no-repeat 0 0; }
+      background: url("../img/gts (5).png") no-repeat 0 0; }
       .section_gts ul li:nth-child(8) div {
         background: #4BB482; }
 
@@ -9071,7 +9070,7 @@ ul {
     margin: 0 auto;
     text-align: center;
     border: 1px solid #F6F6F6;
-    background: url("xiazai1.png") repeat-x 0 center; }
+    background: url("../img/xiazai1.png") repeat-x 0 center; }
     .section_hmgg .hmgg span {
       width: 178px;
       height: 50px;
@@ -9133,13 +9132,13 @@ ul {
         line-height: 42px;
         color: #444444; }
     .footer .footer_top ul li:first-child span {
-      background: url("foot (2).png") no-repeat 0 0; }
+      background: url("../img/foot (2).png") no-repeat 0 0; }
     .footer .footer_top ul li:nth-child(2) span {
-      background: url("foot (2).png") no-repeat 0 -43px; }
+      background: url("../img/foot (2).png") no-repeat 0 -43px; }
     .footer .footer_top ul li:nth-child(3) span {
-      background: url("foot (2).png") no-repeat 0 -86px; }
+      background: url("../img/foot (2).png") no-repeat 0 -86px; }
     .footer .footer_top ul li:nth-child(4) span {
-      background: url("foot (2).png") no-repeat 0 -129px; }
+      background: url("../img/foot (2).png") no-repeat 0 -129px; }
   .footer .footer_center {
     height: 200px;
     padding-top: 30px;
@@ -9163,7 +9162,7 @@ ul {
       width: 200px;
       height: 150px;
       padding-left: 20px;
-      background: url("foot (1).png") no-repeat 0 0; }
+      background: url("../img/foot (1).png") no-repeat 0 0; }
       .footer .footer_center ol:last-child li:first-child {
         text-align: center;
         margin-bottom: 10px; }
@@ -9207,16 +9206,16 @@ ul {
         height: 37px;
         float: left; }
       .footer .footer_foot ul li:first-child {
-        background: url("foot (1).png") no-repeat 0 -145px; }
+        background: url("../img/foot (1).png") no-repeat 0 -145px; }
       .footer .footer_foot ul li:nth-child(2) {
-        background: url("foot (1).png") no-repeat -100px -145px; }
+        background: url("../img/foot (1).png") no-repeat -100px -145px; }
       .footer .footer_foot ul li:nth-child(3) {
-        background: url("foot (1).png") no-repeat 0 -181px; }
+        background: url("../img/foot (1).png") no-repeat 0 -181px; }
       .footer .footer_foot ul li:nth-child(4) {
-        background: url("foot (1).png") no-repeat -100px -181px; }
+        background: url("../img/foot (1).png") no-repeat -100px -181px; }
       .footer .footer_foot ul li:nth-child(5) {
-        background: url("foot (1).png") no-repeat 0 -215px; }
+        background: url("../img/foot (1).png") no-repeat 0 -215px; }
       .footer .footer_foot ul li:nth-child(6) {
-        background: url("foot (1).png") no-repeat -100px -215px; }
+        background: url("../img/foot (1).png") no-repeat -100px -215px; }
 
 /*# sourceMappingURL=GL.css.map */

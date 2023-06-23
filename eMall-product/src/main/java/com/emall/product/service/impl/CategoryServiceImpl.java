@@ -1,15 +1,17 @@
 package com.emall.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.emall.product.service.CategoryBrandRelationService;
 import com.emall.product.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +23,7 @@ import com.emall.common.utils.Query;
 import com.emall.product.dao.CategoryDao;
 import com.emall.product.entity.CategoryEntity;
 import com.emall.product.service.CategoryService;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service("categoryService")
@@ -28,6 +31,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+
+    StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -90,8 +97,54 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return categoryEntities;
     }
 
+    public Map<String, List<Catelog2Vo>> getCatelogJsonFromDbWithRedisLock() {
+        //1、占分布式锁。去redis占坑      设置过期时间必须和加锁是同步的，保证原子性（避免死锁）
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = stringRedisTemplate.opsForValue().setIfAbsent("lock", uuid, 300, TimeUnit.SECONDS);
+        if(lock) {
+            System.out.println("获取分布式锁成功...");
+            Map<String, List<Catelog2Vo>> dataFromDb = null;
+            try {
+                //加锁成功...执行业务
+                dataFromDb = getCatelogJsonFromDb();
+            } finally {
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                //删除锁
+                stringRedisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class), Arrays.asList("lock"), uuid);
+            }
+            return dataFromDb;
+        } else {
+            System.out.println("获取分布式锁失败...等待重试...");
+            //加锁失败...重试机制
+            //休眠一百毫秒
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getCatelogJsonFromDbWithRedisLock();     //自旋的方式
+        }
+    }
+
     @Override
     public Map<String, List<Catelog2Vo>> getCatelogJson() {
+        String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+        if(StringUtils.isEmpty(catelogJson)) {
+            synchronized (this) {
+                catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+                if(StringUtils.isEmpty(catelogJson)) {
+                    Map<String, List<Catelog2Vo>> catelogJsonFromDb = getCatelogJsonFromDb();
+                    String s = JSON.toJSONString(catelogJsonFromDb);
+                    stringRedisTemplate.opsForValue().set("catelogJson", s);
+                    return catelogJsonFromDb;
+                }
+            }
+        }
+        Map<String, List<Catelog2Vo>> result = JSON.parseObject(catelogJson, new TypeReference<Map<String, List<Catelog2Vo>>>(){});
+        return result;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatelogJsonFromDb() {
         System.out.println("查询了数据库");
 
         //将数据库的多次查询变为一次
