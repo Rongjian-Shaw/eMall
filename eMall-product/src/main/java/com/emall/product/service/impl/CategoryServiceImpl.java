@@ -5,6 +5,9 @@ import com.alibaba.fastjson.TypeReference;
 import com.emall.product.service.CategoryBrandRelationService;
 import com.emall.product.vo.Catelog2Vo;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -33,8 +36,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     CategoryBrandRelationService categoryBrandRelationService;
 
     @Autowired
-
     StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedissonClient redissonClient;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -126,25 +131,83 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
+    /**
+     * 缓存里的数据如何和数据库的数据保持一致？？
+     * 缓存数据一致性
+     * 1)、双写模式
+     * 2)、失效模式
+     * @return
+     */
+    public Map<String, List<Catelog2Vo>> getCatelogJsonFromDbWithRedissonLock() {
+        //1、占分布式锁。去redis占坑
+        //（锁的粒度，越细越快:具体缓存的是某个数据，11号商品） product-11-lock
+        //RLock catalogJsonLock = redissonClient.getLock("catalogJson-lock");
+        //创建读锁
+        RReadWriteLock readWriteLock = redissonClient.getReadWriteLock("catelogJson-lock");
+        RLock rLock = readWriteLock.readLock();
+        Map<String, List<Catelog2Vo>> dataFromDb = null;
+        try {
+            rLock.lock();
+            dataFromDb = getCatelogJsonFromDb();
+        } finally {
+            rLock.unlock();
+        }
+        return dataFromDb;
+    }
+
+    //TODO 产生堆外内存溢出OutOfDirectMemoryError:
+    //1)、springboot2.0以后默认使用lettuce操作redis的客户端，它使用通信
+    //2)、lettuce的bug导致netty堆外内存溢出   可设置：-Dio.netty.maxDirectMemory
+    //解决方案：不能直接使用-Dio.netty.maxDirectMemory去调大堆外内存
+    //1)、升级lettuce客户端。      2）、切换使用jedis
     @Override
     public Map<String, List<Catelog2Vo>> getCatelogJson() {
+        //给缓存中放json字符串，拿出的json字符串，反序列为能用的对象
+
+        /**
+         * 1、空结果缓存：解决缓存穿透问题
+         * 2、设置过期时间(加随机值)：解决缓存雪崩
+         * 3、加锁：解决缓存击穿问题
+         */
+
+        //1、加入缓存逻辑,缓存中存的数据是json字符串
+        //JSON跨语言。跨平台兼容。
         String catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+        // 本地锁
+//        if(StringUtils.isEmpty(catelogJson)) {
+//            synchronized (this) {
+//                catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
+//                if(StringUtils.isEmpty(catelogJson)) {
+//                    Map<String, List<Catelog2Vo>> catelogJsonFromDb = getCatelogJsonFromDb();
+//                    String s = JSON.toJSONString(catelogJsonFromDb);
+//                    stringRedisTemplate.opsForValue().set("catelogJson", s);
+//                    return catelogJsonFromDb;
+//                }
+//            }
+//        }
+
         if(StringUtils.isEmpty(catelogJson)) {
-            synchronized (this) {
-                catelogJson = stringRedisTemplate.opsForValue().get("catelogJson");
-                if(StringUtils.isEmpty(catelogJson)) {
-                    Map<String, List<Catelog2Vo>> catelogJsonFromDb = getCatelogJsonFromDb();
-                    String s = JSON.toJSONString(catelogJsonFromDb);
-                    stringRedisTemplate.opsForValue().set("catelogJson", s);
-                    return catelogJsonFromDb;
-                }
-            }
+            System.out.println("缓存不命中...查询数据库...");
+            //2、缓存中没有数据，查询数据库
+            Map<String, List<Catelog2Vo>> catelogJsonFromDb = getCatelogJsonFromDbWithRedisLock();
+            return catelogJsonFromDb;
         }
+        System.out.println("缓存命中...直接返回...");
         Map<String, List<Catelog2Vo>> result = JSON.parseObject(catelogJson, new TypeReference<Map<String, List<Catelog2Vo>>>(){});
         return result;
     }
 
     public Map<String, List<Catelog2Vo>> getCatelogJsonFromDb() {
+        //得到锁以后，我们应该再去缓存中确定一次，如果没有才需要继续查询
+        String catalogJson = stringRedisTemplate.opsForValue().get("catalogJson");
+        if (!StringUtils.isEmpty(catalogJson)) {
+            //缓存不为空直接返回
+            Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {
+            });
+
+            return result;
+        }
+
         System.out.println("查询了数据库");
 
         //将数据库的多次查询变为一次
@@ -185,8 +248,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return catelog2Vos;
         }));
 
-        return parentCid;
+        //3、将查到的数据放入缓存,将对象转为json
+        String valueJson = JSON.toJSONString(parentCid);
+        stringRedisTemplate.opsForValue().set("catalogJson", valueJson, 1, TimeUnit.DAYS);
 
+        return parentCid;
     }
 
     // Get all children catagory recursily

@@ -7,6 +7,7 @@ import com.emall.product.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -29,6 +30,9 @@ public class EMallProductApplicationTests {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedissonClient redissonClient;
 
     @Test
     public void testGetCatelogPath(){
@@ -58,6 +62,11 @@ public class EMallProductApplicationTests {
         ops.set("a", "hello world" + UUID.randomUUID().toString());
         String a = ops.get("a");
         System.out.println("a is " + a);
+    }
+
+    @Test
+    public void testRedisson() {
+        System.out.println(redissonClient);
     }
 
 
