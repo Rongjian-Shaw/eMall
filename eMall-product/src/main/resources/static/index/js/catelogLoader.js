@@ -19,7 +19,7 @@ $(function(){
                         var  ctg3List=ctg2["catelog3List"];
                         var len=0;
                         $.each(ctg3List,function (i,ctg3) {
-                            var cate3link = $("<a href=\"http://search.gmall.com/list.html?catelog3Id="+ctg3.id+"\" style=\"color: #999;\">" + ctg3.name + "</a>");
+                            var cate3link = $("<a href=\"http://search.emall.com/list.html?catelog3Id="+ctg3.id+"\" style=\"color: #999;\">" + ctg3.name + "</a>");
                             li.append(cate3link);
                             len=len+1+ctg3.name.length;
                         });

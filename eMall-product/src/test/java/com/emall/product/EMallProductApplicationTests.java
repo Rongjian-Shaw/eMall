@@ -71,3 +71,12 @@ public class EMallProductApplicationTests {
 
 
 }
+
+class StringCollection {
+    List<String> stringsCollection;
+    public void addString(String string) {}
+
+    public List<String> getStringsCollection() {
+        return null;
+    }
+}

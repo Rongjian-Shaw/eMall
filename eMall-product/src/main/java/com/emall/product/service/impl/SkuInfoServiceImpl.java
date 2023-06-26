@@ -2,6 +2,7 @@ package com.emall.product.service.impl;
 
 import com.emall.product.entity.SpuInfoEntity;
 import com.emall.product.vo.Images;
+import com.emall.product.vo.SkuItemVo;
 import com.emall.product.vo.Skus;
 import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -102,6 +103,12 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         List<SkuInfoEntity> skuInfoEntities = this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
 
         return skuInfoEntities;
+    }
+
+    @Override
+    public SkuItemVo item(Long skuId) {
+
+        return null;
     }
 
 }
