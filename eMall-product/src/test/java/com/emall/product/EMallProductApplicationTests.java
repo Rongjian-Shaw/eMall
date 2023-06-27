@@ -1,9 +1,13 @@
 package com.emall.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.emall.product.dao.AttrGroupDao;
 import com.emall.product.entity.BrandEntity;
 import com.emall.product.service.BrandService;
 import com.emall.product.service.CategoryService;
+import com.emall.product.service.SkuSaleAttrValueService;
+import com.emall.product.vo.SkuItemSaleAttrVo;
+import com.emall.product.vo.SpuItemAttrGroupVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +37,12 @@ public class EMallProductApplicationTests {
 
     @Autowired
     RedissonClient redissonClient;
+
+    @Autowired
+    SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Autowired
+    AttrGroupDao attrGroupDao;
 
     @Test
     public void testGetCatelogPath(){
@@ -69,6 +79,17 @@ public class EMallProductApplicationTests {
         System.out.println(redissonClient);
     }
 
+    @Test
+    public void skuSaleAttrValueService() {
+        List<SkuItemSaleAttrVo> saleAttrBySpuId = skuSaleAttrValueService.getSaleAttrBySpuId(13L);
+        System.out.println(saleAttrBySpuId);
+    }
+
+    @Test
+    public void testattrGroupDao() {
+        List<SpuItemAttrGroupVo> attrGroupWithAttrsBySpuId = attrGroupDao.getAttrGroupWithAttrsBySpuId(13L, 225L);
+        System.out.println(attrGroupWithAttrsBySpuId);
+    }
 
 }
 
