@@ -47,6 +47,11 @@ spring:
           predicates:
             - Host=search.emall.com
 
+        - id: emall_auth_route
+          uri: lb://eMall-auth-server
+          predicates:
+            - Host=auth.emall.com
+
         - id: emall_host_route
           uri: lb://eMall-product
           predicates:

@@ -3,6 +3,10 @@ package com.emall.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.emall.common.utils.PageUtils;
 import com.emall.member.entity.MemberEntity;
+import com.emall.member.exception.PhoneException;
+import com.emall.member.exception.UsernameException;
+import com.emall.member.vo.MemberUserLoginVo;
+import com.emall.member.vo.MemberUserRegisterVo;
 
 import java.util.Map;
 
@@ -16,5 +20,13 @@ import java.util.Map;
 public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void register(MemberUserRegisterVo vo);
+
+    void checkPhoneUnique(String phone) throws PhoneException;
+
+    void checkUserNameUnique(String userName) throws UsernameException;
+
+    MemberEntity login(MemberUserLoginVo vo);
 }
 
